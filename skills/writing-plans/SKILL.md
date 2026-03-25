@@ -124,9 +124,9 @@ After writing the complete plan:
 - If loop exceeds 3 iterations, surface to human for guidance
 - Reviewers are advisory — explain disagreements if you believe feedback is incorrect
 
-## Synchestra Integration (Optional)
+## Synchestra Task Creation
 
-If Synchestra CLI is available and the project is initialized (`synchestra.yaml` exists), create persistent tasks after saving the plan:
+After saving the plan file, create persistent Synchestra tasks:
 
 1. Create a parent task for the plan:
    ```bash
@@ -141,7 +141,7 @@ If Synchestra CLI is available and the project is initialized (`synchestra.yaml`
    synchestra task enqueue <id>
    ```
 
-This enables cross-session continuity and multi-agent coordination. If Synchestra is unavailable, skip this step — the plan file alone is sufficient.
+This enables cross-session continuity and multi-agent coordination.
 
 ## Execution Handoff
 
