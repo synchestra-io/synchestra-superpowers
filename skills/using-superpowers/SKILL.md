@@ -7,6 +7,16 @@ description: Use when starting any conversation - establishes how to find and us
 If you were dispatched as a subagent to execute a specific task, skip this skill.
 </SUBAGENT-STOP>
 
+## Onboarding Check
+
+Before anything else, verify the Synchestra stack is ready:
+
+```bash
+command -v synchestra >/dev/null 2>&1 && synchestra task list >/dev/null 2>&1
+```
+
+If either check fails, invoke `superpowers:onboarding` before proceeding with any other skill.
+
 <EXTREMELY-IMPORTANT>
 If you think there is even a 1% chance a skill might apply to what you are doing, you ABSOLUTELY MUST invoke the skill.
 
