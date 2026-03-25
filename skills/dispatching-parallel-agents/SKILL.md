@@ -157,9 +157,9 @@ Agent 3 → Fix tool-approval-race-conditions.test.ts
 
 **Time saved:** 3 problems solved in parallel vs sequentially
 
-## Synchestra Integration (Optional)
+## Synchestra Task Claiming
 
-If Synchestra is available and initialized, use it for atomic task claiming:
+Use Synchestra for atomic task claiming when dispatching parallel agents:
 
 **Before dispatching agents:**
 ```bash
@@ -177,8 +177,6 @@ synchestra task complete <task-id>  # or fail/block as appropriate
 - Git-backed optimistic locking prevents two agents from working on the same task
 - If two sessions dispatch agents for the same project, Synchestra's claim protocol prevents conflicts
 - Task board shows real-time view of which agents are working on what
-
-If Synchestra is unavailable, parallel dispatch works exactly as before — you just don't get cross-session coordination.
 
 ## Key Benefits
 
