@@ -262,14 +262,14 @@ Done!
 - Dispatch fix subagent with specific instructions
 - Don't try to fix manually (context pollution)
 
-## Synchestra Integration (Optional)
+## Synchestra Task State
 
-If Synchestra CLI is available and the project is initialized, use persistent task state alongside TodoWrite:
+Use persistent Synchestra task state alongside TodoWrite:
 
 **At plan extraction:**
 - Check for existing Synchestra tasks matching the plan (created by `writing-plans`)
 - If found, use Synchestra task IDs to track state persistently
-- If not found, create tasks now (see `synchestra-state` skill)
+- If not found, create tasks now (see writing-plans skill for task creation)
 
 **Per-task lifecycle:**
 1. Before dispatching implementer: `synchestra task claim <id>` then `synchestra task start <id>`
@@ -282,8 +282,6 @@ If Synchestra CLI is available and the project is initialized, use persistent ta
 - Synchestra state persists — if session ends mid-plan, the next session can see exactly where work stopped
 - Enables deviation reports comparing planned tasks vs actual completion
 
-If Synchestra is unavailable, skip all `synchestra task` commands — TodoWrite alone is sufficient.
-
 ## Integration
 
 **Required workflow skills:**
@@ -291,9 +289,6 @@ If Synchestra is unavailable, skip all `synchestra task` commands — TodoWrite 
 - **superpowers:writing-plans** - Creates the plan this skill executes
 - **superpowers:requesting-code-review** - Code review template for reviewer subagents
 - **superpowers:finishing-a-development-branch** - Complete development after all tasks
-
-**Optional:**
-- **superpowers:synchestra-state** - Persistent task state across sessions
 
 **Subagents should use:**
 - **superpowers:test-driven-development** - Subagents follow TDD for each task
