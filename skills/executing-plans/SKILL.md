@@ -62,23 +62,21 @@ After all tasks complete and verified:
 - Stop when blocked, don't guess
 - Never start implementation on main/master branch without explicit user consent
 
-## Synchestra Integration (Optional)
+## Synchestra Task State
 
-If Synchestra CLI is available and the project is initialized, use persistent task state alongside TodoWrite:
+Use persistent Synchestra task state alongside TodoWrite:
 
 **At plan load (Step 1):**
 - Check for existing Synchestra tasks matching the plan
 - If found, use their state to resume (skip already-completed tasks)
-- If not found, create tasks now (see `synchestra-state` skill)
+- If not found, create tasks now (see writing-plans skill for task creation)
 
 **During execution (Step 2):**
 - Before each task: `synchestra task claim <id>` then `synchestra task start <id>`
 - After verification: `synchestra task complete <id>`
 - On blocker: `synchestra task block <id> "reason"` and stop
 
-**Cross-session resume:** If a previous session left tasks `in_progress` or `queued`, this session can pick up where it left off without re-reading the plan.
-
-If Synchestra is unavailable, skip all `synchestra task` commands — TodoWrite alone is sufficient.
+**Cross-session resume:** If a previous session left tasks `in_progress` or `queued`, this session picks up where it left off without re-reading the plan.
 
 ## Integration
 
@@ -87,5 +85,3 @@ If Synchestra is unavailable, skip all `synchestra task` commands — TodoWrite 
 - **superpowers:writing-plans** - Creates the plan this skill executes
 - **superpowers:finishing-a-development-branch** - Complete development after all tasks
 
-**Optional:**
-- **superpowers:synchestra-state** - Persistent task state across sessions
