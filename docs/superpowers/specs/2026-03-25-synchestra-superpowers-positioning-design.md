@@ -126,7 +126,7 @@ The current Synchestra CLI requires `synchestra-spec-repo.yaml` or `synchestra-s
 
 | Component | Change |
 |---|---|
-| `pkg/cli/resolve/resolve.go` | `StateRepoPath()` falls back to `.synchestra/` worktree with defaults when no config file found. Auto-creates the orphan branch and worktree on first use if the user consented during onboarding. |
+| `pkg/cli/resolve/resolve.go` | `StateRepoPath()` falls back to `.synchestra/` worktree with defaults when no config file found. Returns NotFound error with guidance to run `synchestra project init` if `.synchestra/` doesn't exist — the resolver never creates state, only detects it. Creation is handled by the onboarding skill or `synchestra project init`. |
 | `spec/features/embedded-state/README.md` | Document config-less mode as a supported use case with defined default values |
 | `spec/features/cli/command-environments.md` | Clarify that task commands work with default state store when no config is present |
 
