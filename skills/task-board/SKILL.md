@@ -16,11 +16,11 @@ Display the current state of all Synchestra tasks in the project. Shows what's q
 Synchestra must be installed and the project initialized. Check:
 
 ```bash
-command -v synchestra >/dev/null 2>&1 && ls synchestra.yaml 2>/dev/null
+synchestra task list
 ```
 
-If not available, tell the user:
-> "Synchestra is not set up in this project. Use `superpowers:install-synchestra` to enable persistent task state."
+If the command fails, tell the user:
+> "Synchestra is not initialized in this project. Use `superpowers:install-synchestra` to get started."
 
 ## Display Board
 
