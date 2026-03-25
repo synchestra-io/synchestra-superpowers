@@ -1,13 +1,13 @@
 {
-  "name": "superpowers",
-  "description": "Core skills library for Claude Code: TDD, debugging, collaboration patterns, and proven techniques",
+  "name": "synchestra-superpowers",
+  "description": "Synchestra's workflow engine for AI agents: TDD, planning, subagent-driven development, and multi-agent coordination — powered by persistent Synchestra state",
   "version": "5.0.5",
   "author": {
-    "name": "Jesse Vincent",
-    "email": "jesse@fsck.com"
+    "name": "Synchestra",
+    "email": "hello@synchestra.io"
   },
-  "homepage": "https://github.com/obra/superpowers",
-  "repository": "https://github.com/obra/superpowers",
+  "homepage": "https://github.com/synchestra-io/synchestra-superpowers",
+  "repository": "https://github.com/synchestra-io/synchestra-superpowers",
   "license": "MIT",
-  "keywords": ["skills", "tdd", "debugging", "collaboration", "best-practices", "workflows"]
+  "keywords": ["skills", "tdd", "debugging", "collaboration", "best-practices", "workflows", "synchestra", "multi-agent"]
 }
