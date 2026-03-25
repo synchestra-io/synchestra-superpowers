@@ -22,7 +22,7 @@ synchestra task list
 ```
 
 If the command fails, tell the user:
-> "Synchestra is not initialized in this project. Use `superpowers:install-synchestra` to get started."
+> "Synchestra is not initialized in this project. Use `superpowers:onboarding` to get started."
 
 ## Generate Report
 
