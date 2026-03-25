@@ -17,19 +17,17 @@ fi
 # Read using-superpowers content
 using_superpowers_content=$(cat "${PLUGIN_ROOT}/skills/using-superpowers/SKILL.md" 2>&1 || echo "Error reading using-superpowers skill")
 
-# Check for Synchestra availability and gather state context
+# Gather Synchestra state context
 synchestra_context=""
-if command -v synchestra >/dev/null 2>&1; then
-    if [ -f "synchestra.yaml" ] || [ -d ".synchestra" ]; then
-        synchestra_state=$(synchestra task list 2>/dev/null || true)
-        if [ -n "$synchestra_state" ]; then
-            synchestra_context="\n\n<synchestra-state>\nSynchestra persistent task state is active in this project.\nCurrent task board:\n${synchestra_state}\n\nUse superpowers:task-board for details, superpowers:synchestra-state for task operations.\n</synchestra-state>"
-        else
-            synchestra_context="\n\n<synchestra-state>\nSynchestra is initialized in this project (no tasks yet). Use superpowers:synchestra-state for task operations.\n</synchestra-state>"
-        fi
+if command -v synchestra >/dev/null 2>&1 && synchestra task list >/dev/null 2>&1; then
+    synchestra_state=$(synchestra task list 2>/dev/null || true)
+    if [ -n "$synchestra_state" ]; then
+        synchestra_context="\n\n<synchestra-state>\nSynchestra persistent task state is active in this project.\nCurrent task board:\n${synchestra_state}\n\nUse superpowers:task-board for details.\n</synchestra-state>"
     else
-        synchestra_context="\n\n<synchestra-available>\nSynchestra CLI is available but not initialized in this project. The user can run superpowers:install-synchestra to enable persistent task state.\n</synchestra-available>"
+        synchestra_context="\n\n<synchestra-state>\nSynchestra is initialized in this project (no tasks yet).\n</synchestra-state>"
     fi
+else
+    synchestra_context="\n\n<synchestra-setup-needed>\nSynchestra stack is not fully set up. The onboarding skill will run automatically to configure it.\n</synchestra-setup-needed>"
 fi
 
 # Escape string for JSON embedding using bash parameter substitution.
