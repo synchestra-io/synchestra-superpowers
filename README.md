@@ -1,159 +1,117 @@
-# Superpowers
+# Synchestra Superpowers
 
-Superpowers is a complete software development workflow for your coding agents, built on top of a set of composable "skills" and some initial instructions that make sure your agent uses them.
+Synchestra Superpowers is Synchestra's workflow engine for AI coding agents. It provides a complete development workflow built on composable skills — from brainstorming through planning, implementation, review, and delivery — all backed by Synchestra's persistent, git-backed state.
 
-## How it works
+**Synchestra is required.** This is not a fork of superpowers with optional extras. Synchestra Superpowers is designed around persistent state from the ground up: cross-session task continuity, multi-agent coordination, and deviation reports are first-class features, not bolted-on integrations.
 
-It starts from the moment you fire up your coding agent. As soon as it sees that you're building something, it *doesn't* just jump into trying to write code. Instead, it steps back and asks you what you're really trying to do. 
+## Three-Layer Stack
 
-Once it's teased a spec out of the conversation, it shows it to you in chunks short enough to actually read and digest. 
+```
++----------------------------------+
+|   Synchestra Superpowers         |  <-- workflow skills (this repo)
+|   (brainstorming, TDD, plans,    |
+|    subagent-driven-dev, etc.)    |
++----------------------------------+
+|   Synchestra Core Skills         |  <-- task/feature skills (synchestra ai-plugin)
+|   (task-new, claim-task,         |
+|    feature-info, spec-search)    |
++----------------------------------+
+|   Synchestra CLI                 |  <-- the binary
+|   (synchestra project/task/      |
+|    feature commands)             |
++----------------------------------+
+```
 
-After you've signed off on the design, your agent puts together an implementation plan that's clear enough for an enthusiastic junior engineer with poor taste, no judgement, no project context, and an aversion to testing to follow. It emphasizes true red/green TDD, YAGNI (You Aren't Gonna Need It), and DRY. 
+| Component | Repo | Installs as |
+|---|---|---|
+| Synchestra CLI | `synchestra-io/synchestra` | Pre-built binary from GitHub releases |
+| Core skills | `synchestra-io/synchestra` ai-plugin | Claude plugin / skill pack |
+| Workflow skills | `synchestra-io/synchestra-superpowers` | Claude plugin |
 
-Next up, once you say "go", it launches a *subagent-driven-development* process, having agents work through each engineering task, inspecting and reviewing their work, and continuing forward. It's not uncommon for Claude to be able to work autonomously for a couple hours at a time without deviating from the plan you put together.
+Synchestra Superpowers does not bundle core skills. It declares them as a dependency. The onboarding skill detects and installs missing layers.
 
-There's a bunch more to it, but that's the core of the system. And because the skills trigger automatically, you don't need to do anything special. Your coding agent just has Superpowers.
+## Getting Started
 
+### Install the plugin
 
-## Sponsorship
-
-If Superpowers has helped you do stuff that makes money and you are so inclined, I'd greatly appreciate it if you'd consider [sponsoring my opensource work](https://github.com/sponsors/obra).
-
-Thanks! 
-
-- Jesse
-
-
-## Installation
-
-**Note:** Installation differs by platform. Claude Code or Cursor have built-in plugin marketplaces. Codex and OpenCode require manual setup.
-
-### Claude Code Official Marketplace
-
-Superpowers is available via the [official Claude plugin marketplace](https://claude.com/plugins/superpowers)
-
-Install the plugin from Claude marketplace:
-
+**Claude Code Official Marketplace:**
 ```bash
-/plugin install superpowers@claude-plugins-official
+/plugin install synchestra-superpowers@claude-plugins-official
 ```
 
-### Claude Code (via Plugin Marketplace)
-
-In Claude Code, register the marketplace first:
-
+**Claude Code (via Plugin Marketplace):**
 ```bash
-/plugin marketplace add obra/superpowers-marketplace
+/plugin marketplace add synchestra-io/synchestra-superpowers-marketplace
+/plugin install synchestra-superpowers@synchestra-superpowers-marketplace
 ```
 
-Then install the plugin from this marketplace:
+### Automatic onboarding
 
-```bash
-/plugin install superpowers@superpowers-marketplace
-```
+On first session, the `onboarding` skill runs automatically if any layer of the stack is missing:
 
-### Cursor (via Plugin Marketplace)
+1. **Synchestra CLI** — detects OS/arch, downloads pre-built binary from latest GitHub release (no Go toolchain needed)
+2. **Core skills** — downloads ai-plugin from same release, installs as plugin
+3. **Project setup** — presents three options:
+   - **A) Single repo** — sensible defaults, zero config (state on orphan branch `synchestra-state`)
+   - **B) Multiple repos** — guided topology configuration
+   - **C) Dedicated state repo** — for continuity across environments and parallel workstreams
 
-In Cursor Agent chat, install from marketplace:
+Each step asks for confirmation. If you decline a step, the skill explains what won't work and stops.
 
-```text
-/add-plugin superpowers
-```
+## The Workflow
 
-or search for "superpowers" in the plugin marketplace.
+1. **brainstorming** — Refines rough ideas through questions, explores alternatives, saves design document
+2. **using-git-worktrees** — Creates isolated workspace on a new branch
+3. **writing-plans** — Breaks work into bite-sized tasks (2-5 min each) with exact file paths, complete code, and verification steps. Creates Synchestra tasks for cross-session tracking.
+4. **subagent-driven-development** or **executing-plans** — Dispatches fresh subagent per task with two-stage review (spec compliance, then code quality), or executes inline with checkpoints. Synchestra tracks task state persistently.
+5. **test-driven-development** — Enforces RED-GREEN-REFACTOR cycle
+6. **requesting-code-review** — Reviews against plan, reports issues by severity
+7. **finishing-a-development-branch** — Verifies tests, presents options (merge/PR/keep/discard), cleans up
 
-### Codex
+**Persistent state throughout:** Tasks survive across sessions. Multiple agents coordinate via atomic claiming. Deviation reports compare plan vs actual execution.
 
-Tell Codex:
+The agent checks for relevant skills before any task. Mandatory workflows, not suggestions.
 
-```
-Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.codex/INSTALL.md
-```
+## Skills Library
 
-**Detailed docs:** [docs/README.codex.md](docs/README.codex.md)
+**Workflow**
+- **brainstorming** — Socratic design refinement
+- **writing-plans** — Detailed implementation plans with Synchestra task creation
+- **executing-plans** — Batch execution with Synchestra state tracking
+- **subagent-driven-development** — Fresh subagent per task with two-stage review
+- **dispatching-parallel-agents** — Concurrent subagent workflows with atomic task claiming
+- **finishing-a-development-branch** — Merge/PR decision workflow
+- **using-git-worktrees** — Parallel development branches
 
-### OpenCode
+**Quality**
+- **test-driven-development** — RED-GREEN-REFACTOR cycle
+- **systematic-debugging** — 4-phase root cause process
+- **verification-before-completion** — Ensure it's actually fixed
+- **requesting-code-review** — Pre-review checklist
+- **receiving-code-review** — Responding to feedback
 
-Tell OpenCode:
-
-```
-Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.opencode/INSTALL.md
-```
-
-**Detailed docs:** [docs/README.opencode.md](docs/README.opencode.md)
-
-### Gemini CLI
-
-```bash
-gemini extensions install https://github.com/obra/superpowers
-```
-
-To update:
-
-```bash
-gemini extensions update superpowers
-```
-
-### Verify Installation
-
-Start a new session in your chosen platform and ask for something that should trigger a skill (for example, "help me plan this feature" or "let's debug this issue"). The agent should automatically invoke the relevant superpowers skill.
-
-## The Basic Workflow
-
-1. **brainstorming** - Activates before writing code. Refines rough ideas through questions, explores alternatives, presents design in sections for validation. Saves design document.
-
-2. **using-git-worktrees** - Activates after design approval. Creates isolated workspace on new branch, runs project setup, verifies clean test baseline.
-
-3. **writing-plans** - Activates with approved design. Breaks work into bite-sized tasks (2-5 minutes each). Every task has exact file paths, complete code, verification steps.
-
-4. **subagent-driven-development** or **executing-plans** - Activates with plan. Dispatches fresh subagent per task with two-stage review (spec compliance, then code quality), or executes in batches with human checkpoints.
-
-5. **test-driven-development** - Activates during implementation. Enforces RED-GREEN-REFACTOR: write failing test, watch it fail, write minimal code, watch it pass, commit. Deletes code written before tests.
-
-6. **requesting-code-review** - Activates between tasks. Reviews against plan, reports issues by severity. Critical issues block progress.
-
-7. **finishing-a-development-branch** - Activates when tasks complete. Verifies tests, presents options (merge/PR/keep/discard), cleans up worktree.
-
-**The agent checks for relevant skills before any task.** Mandatory workflows, not suggestions.
-
-## What's Inside
-
-### Skills Library
-
-**Testing**
-- **test-driven-development** - RED-GREEN-REFACTOR cycle (includes testing anti-patterns reference)
-
-**Debugging**
-- **systematic-debugging** - 4-phase root cause process (includes root-cause-tracing, defense-in-depth, condition-based-waiting techniques)
-- **verification-before-completion** - Ensure it's actually fixed
-
-**Collaboration** 
-- **brainstorming** - Socratic design refinement
-- **writing-plans** - Detailed implementation plans
-- **executing-plans** - Batch execution with checkpoints
-- **dispatching-parallel-agents** - Concurrent subagent workflows
-- **requesting-code-review** - Pre-review checklist
-- **receiving-code-review** - Responding to feedback
-- **using-git-worktrees** - Parallel development branches
-- **finishing-a-development-branch** - Merge/PR decision workflow
-- **subagent-driven-development** - Fast iteration with two-stage review (spec compliance, then code quality)
+**Synchestra**
+- **onboarding** — 3-layer stack setup (CLI, core skills, project)
+- **task-board** — View current task state across all collaborators
+- **deviation-report** — Compare planned vs actual execution
 
 **Meta**
-- **writing-skills** - Create new skills following best practices (includes testing methodology)
-- **using-superpowers** - Introduction to the skills system
+- **writing-skills** — Create new skills following best practices
+- **using-superpowers** — Introduction to the skills system
 
 ## Philosophy
 
-- **Test-Driven Development** - Write tests first, always
-- **Systematic over ad-hoc** - Process over guessing
-- **Complexity reduction** - Simplicity as primary goal
-- **Evidence over claims** - Verify before declaring success
+- **Test-Driven Development** — Write tests first, always
+- **Systematic over ad-hoc** — Process over guessing
+- **Complexity reduction** — Simplicity as primary goal
+- **Evidence over claims** — Verify before declaring success
+- **Persistent state** — Tasks survive sessions, agents coordinate, nothing gets lost
 
-Read more: [Superpowers for Claude Code](https://blog.fsck.com/2025/10/09/superpowers/)
+## Relationship to upstream superpowers
+
+Synchestra Superpowers is forked from [obra/superpowers](https://github.com/obra/superpowers). Core skill logic (brainstorming, TDD, debugging, etc.) stays in sync with upstream where it makes sense. Synchestra integration is woven into the skills, not bolted on. The fork diverges from upstream patterns when Synchestra enables a better UX.
 
 ## Contributing
-
-Skills live directly in this repository. To contribute:
 
 1. Fork the repository
 2. Create a branch for your skill
@@ -164,24 +122,10 @@ See `skills/writing-skills/SKILL.md` for the complete guide.
 
 ## Updating
 
-Skills update automatically when you update the plugin:
-
 ```bash
-/plugin update superpowers
+/plugin update synchestra-superpowers
 ```
 
 ## License
 
 MIT License - see LICENSE file for details
-
-## Community
-
-Superpowers is built by [Jesse Vincent](https://blog.fsck.com) and the rest of the folks at [Prime Radiant](https://primeradiant.com).
-
-For community support, questions, and sharing what you're building with Superpowers, join us on [Discord](https://discord.gg/Jd8Vphy9jq).
-
-## Support
-
-- **Discord**: [Join us on Discord](https://discord.gg/Jd8Vphy9jq)
-- **Issues**: https://github.com/obra/superpowers/issues
-- **Marketplace**: https://github.com/obra/superpowers-marketplace
